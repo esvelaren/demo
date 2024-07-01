@@ -13,11 +13,6 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    // Remove node_modules and package-lock.json to ensure a clean install
-                    bat 'if exist node_modules rmdir /s /q node_modules'
-                    bat 'if exist package-lock.json del /f /q package-lock.json'
-                    // Explicitly install the problematic module
-                    bat 'npm install @rollup/rollup-win32-x64-msvc --verbose'
                     // Use Node.js environment
                     bat 'node --version'
                     bat 'npm --version'
