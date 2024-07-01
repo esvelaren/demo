@@ -5,6 +5,10 @@ pipeline {
         CI = 'true'
     }
 
+    tools {
+        nodejs '22.3.0'
+    }
+
     stages {
         stage('Install Dependencies') {
             steps {
@@ -12,7 +16,8 @@ pipeline {
                     // Use Node.js environment
                     bat 'node --version'
                     bat 'npm --version'
-                    bat 'npm install'
+                    bat 'npm cache clean --force'
+                    bat 'npm install --verbose --no-optional'
                 }
             }
         }
