@@ -22,7 +22,7 @@ pipeline {
             }
         }
 
-        stage('Lint') {
+        stage('Code Analyse: Lint') {
             steps {
                 script {
                     // Run linting, assuming a script named "lint" is defined in package.json
@@ -50,14 +50,16 @@ pipeline {
         }
 
         stage('Deploy') {
+            when {
+              branch "main"
+            }
             steps {
                 script {
-                    // Add deployment script here
-                    // This is a placeholder for deployment commands
-                    // For example, to deploy using SSH or to a cloud provider
-                    echo 'Deploying application...'
-                    // sh 'deploy-command-here'
-                }
+                    echo 'Deploying application via ssh...'
+                    // bat 'ssh user@server rm -rf /var/www/temp_deploy/dist/'
+                    // bat 'ssh user@server mkdir -p /var/www/temp_deploy'
+                    // bat 'scp -r dist user@server:/var/www/temp_deploy/dist/'
+                    // bat 'ssh user@server "rm -rf /var/www/example.com/dist/ && mv /var/www/temp_deploy/dist/ /var/www/example.com/"'}
             }
         }
     }
@@ -66,9 +68,12 @@ pipeline {
         always {
             // Clean up workspace after build
             cleanWs()
+            junit(allowEmptyResults: true, testResults: 'test-results/vitest-results.xml')
         }
 
         success {
+            // Archive the 'dist' directory after a successful build
+            archiveArtifacts artifacts: 'dist/**', fingerprint: true
             // Actions to take if the pipeline succeeds
             echo 'Build and deployment succeeded!'
         }
