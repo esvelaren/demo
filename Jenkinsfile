@@ -17,7 +17,7 @@ pipeline {
                     bat 'node --version'
                     bat 'npm --version'
                     bat 'npm cache clean --force'
-                    bat 'npm install --verbose --no-optional'
+                    bat 'npm install --verbose'
                 }
             }
         }
