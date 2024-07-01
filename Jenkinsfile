@@ -68,7 +68,7 @@ pipeline {
     post {
         always {
             // Clean up workspace after build
-            cleanWs()
+            // cleanWs()
             junit(allowEmptyResults: true, testResults: 'test-results/vitest-results.xml')
         }
 
